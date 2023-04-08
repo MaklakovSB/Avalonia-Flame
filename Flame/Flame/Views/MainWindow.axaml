@@ -1,0 +1,128 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Flame.ViewModels"
+		xmlns:convert="using:Flame.Converters"
+		x:Class="Flame.Views.MainWindow"
+		Icon="/Assets/avalonia-logo.ico"
+		Title="Flame"
+        mc:Ignorable="d" 
+		d:DesignWidth="272" 
+		d:DesignHeight="360"
+		WindowStartupLocation="CenterScreen"
+		WindowState="Minimized"
+		SizeToContent="WidthAndHeight"
+		Background="#ff2a2a34">
+
+	<Window.Resources>
+		<convert:TextPrefixConcatenationConverter x:Key="TPCC"/>
+	</Window.Resources>
+	
+    <Design.DataContext>
+		<vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<DockPanel VerticalAlignment="Top" >
+
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="Окно">
+				<MenuItem Header="Вид">
+					<CheckBox Content="Отображать палитру" IsChecked="{Binding IsVisiblePalette, Mode=TwoWay}"/>
+				</MenuItem>
+			</MenuItem>
+		</Menu>
+
+		<Viewbox DockPanel.Dock="Bottom">
+			<StackPanel Orientation="Vertical">
+				
+				<ItemsControl Items="{Binding Squares}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas Width="255" Height="250" Background="Black"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<ItemsControl.Styles>
+						<Style Selector="ItemsControl ContentPresenter">
+							<Setter Property="Canvas.Left" Value="{Binding X}" />
+							<Setter Property="Canvas.Top" Value="{Binding Y}" />
+						</Style>
+					</ItemsControl.Styles>
+
+					<ItemsControl.DataTemplates>
+						<DataTemplate DataType="{x:Type vm:Square}">
+							<Rectangle Width="{Binding Width}" Height="{Binding Height}">
+								<ToolTip.Tip>
+									<StackPanel>
+										<TextBlock Text="{Binding Temperature, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=Temperature}"/>
+										<TextBlock Text="{Binding X, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=X}"/>
+										<TextBlock Text="{Binding Y, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=Y}"/>
+									</StackPanel>
+								</ToolTip.Tip>
+								<Rectangle.Fill>
+									<SolidColorBrush Color="{Binding Fill}" />
+								</Rectangle.Fill>
+							</Rectangle>
+						</DataTemplate>
+					</ItemsControl.DataTemplates>
+			
+				</ItemsControl>
+
+				<ItemsControl Items="{Binding Palette}"
+							  IsVisible="{Binding IsVisiblePalette}"
+							  Margin="0,1,0,0">
+					
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas Width="255" Height="20" Background="Gray"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<ItemsControl.Styles>
+						<Style Selector="ItemsControl ContentPresenter">
+							<Setter Property="Canvas.Left" Value="{Binding X}" />
+							<Setter Property="Canvas.Top" Value="{Binding Y}" />
+						</Style>
+					</ItemsControl.Styles>
+
+					<ItemsControl.DataTemplates>
+						<DataTemplate DataType="{x:Type vm:Square}">
+							<Rectangle Width="{Binding Width}"
+									   Height="{Binding Height}" >
+								<ToolTip.Tip>
+									<StackPanel>
+										<TextBlock Text="{Binding Temperature, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=Temperature}"/>
+										<TextBlock Text="{Binding FillRed, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=Red}"/>
+										<TextBlock Text="{Binding FillGreen, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=Green}"/>
+										<TextBlock Text="{Binding FillBlue, 
+												   Converter={StaticResource TPCC}, 
+												   ConverterParameter=Blue}"/>
+									</StackPanel>
+								</ToolTip.Tip>
+
+								<Rectangle.Fill>
+									<SolidColorBrush Color="{Binding Fill}"/>
+								</Rectangle.Fill>
+							</Rectangle>
+						</DataTemplate>
+					</ItemsControl.DataTemplates>
+				
+				</ItemsControl>
+				
+			</StackPanel>
+		</Viewbox>
+	</DockPanel>
+</Window>
