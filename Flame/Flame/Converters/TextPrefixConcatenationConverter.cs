@@ -11,14 +11,7 @@ namespace Flame.Converters
 
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            //if (value is string sourceText && parameter is string prevNotes
-            //    && targetType.IsAssignableTo(typeof(string)))
-            //{
-                return $@"{parameter}: {value}";
-
-            //}
-            //// converter used for the wrong type
-            return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
+            return $@"{parameter}: {value}";
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
